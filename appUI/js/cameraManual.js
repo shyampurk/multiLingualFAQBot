@@ -48,7 +48,7 @@ $(document).ready(function () {
 	        	queryAsked.text("Search Query : "+msg.userQuery);
 				updateQueryAnswer(msg.ltApiResp)
 	        }else if(msg.messagecode == '1' && msg.messagetype == "err"){
-	        	alert("Error : "+msg.errHandler)
+	        	alert("Error : "+msg.errHandler.errType)
 	        }
 	    }
 	})
@@ -118,32 +118,36 @@ $(document).ready(function () {
 function updateQueryAnswer(ltApiResp){
 	loading.empty();
 	console.log(ltApiResp)
-	console.log(ltApiResp.translations.length)
-	for (var i = 0; i < ltApiResp.translations.length; i+=2) {
-		console.log(ltApiResp.translations.length)
-		var userData = {
-				QueryTitle : ltApiResp.translations[i].translation,
-				QueryAnswer : ltApiResp.translations[i+1].translation,
-			}
-		var userTemplate = [   '<div id="mainContainer" class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">',
-	                                '<fieldset class="majorpoints">',
-	                                '<legend class="majorpointslegend">{{QueryTitle}}</legend>',
-	                                '<div id="ansContainer" class="hiders" style="display:none">',
-	                                    '<div class="media-body" >',
-	                                        '<small class="text-muted" >{{QueryAnswer}}</small>',
-	                                    '</div>',
-	                                '</div>',
-	                                '</br>',
-	                            '</div>',
-	                            '</br>'].join("\n");
-		
-			var userQueryResultList = Mustache.render(userTemplate, userData);
-		queryResultList.append(userQueryResultList);
-	};
-	// Expand and close the Query Answer Div 
-	$('.majorpoints').click(function(){
-	    $(this).find('.hiders').toggle();
-	});
+	if("error_code" in ltApiResp){
+		alert("Error : "+ltApiResp.error_message)
+	}else{
+		for (var i = 0; i < ltApiResp.translations.length; i+=2) {
+			console.log(ltApiResp.translations.length)
+			var userData = {
+					QueryTitle : ltApiResp.translations[i].translation,
+					QueryAnswer : ltApiResp.translations[i+1].translation,
+				}
+			var userTemplate = [   '<div id="mainContainer" class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">',
+		                                '<fieldset class="majorpoints">',
+		                                '<legend class="majorpointslegend">{{QueryTitle}}</legend>',
+		                                '<div id="ansContainer" class="hiders" style="display:none">',
+		                                    '<div class="media-body" >',
+		                                        '<small class="text-muted" >{{QueryAnswer}}</small>',
+		                                    '</div>',
+		                                '</div>',
+		                                '</br>',
+		                            '</div>',
+		                            '</br>'].join("\n");
+			
+				var userQueryResultList = Mustache.render(userTemplate, userData);
+			queryResultList.append(userQueryResultList);
+		};
+		// Expand and close the Query Answer Div 
+		$('.majorpoints').click(function(){
+		    $(this).find('.hiders').toggle();
+		});
+	}
+	
 };
 
 /******************************************************************

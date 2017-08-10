@@ -65,7 +65,7 @@ export default (request) => {
     // 0 - Query for camera manual list from kv store
     if(request.message.messagecode === "0"){
         console.log("In message code 0 - fetch manual list");
-        // db.set(kvstoreCameraList,cameraListData);
+        // db.set(kvstoreCameraList,cameraListData,144000);
 
         return dbget().then((x)=>{
             request.message.userManual = x.userManual;
@@ -94,7 +94,7 @@ export default (request) => {
                 var en_resp = {"translations":inputEnglishLanguageText};
                 console.log(en_resp)
                 var respSize = lengthInUtf8Bytes(JSON.stringify(en_resp))
-                if(respSize == 31000){
+                if(respSize >= 31000){
                     console.log("resp size :",respSize)
                     var errResp = {"errType":"Exceeded 32K message size Limitation"}
                     request.message.messagetype = "err";
@@ -133,7 +133,7 @@ export default (request) => {
                     var ltResp = JSON.parse(y.body)
                     console.log(ltResp)
                     var respSize = lengthInUtf8Bytes(JSON.stringify(ltResp))
-                    if(respSize == 31000){
+                    if(respSize >= 31000){
                         console.log("resp size :",respSize)
                         var errResp = {"errType":"Exceeded 32K message size Limitation"}
                         request.message.messagetype = "err";
