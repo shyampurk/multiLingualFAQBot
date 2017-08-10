@@ -1,0 +1,46 @@
+ .btn-primary {
+        color: black;
+        background-color: #ceeae9;
+        border-color: #357ebd; 
+    }
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+        color: white;
+        background-color: teal;
+        border-color: #285e8e; 
+    }
+/*#ans {
+    background-color: #bbb9db;
+    height: 100px;
+    /*width: auto;*/
+/*}*/
+
+body {
+    background-color: #ceeae9;
+}
+#queryAsked{
+    color: white;
+    background-color: teal;
+    height: auto;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 25px;
+    font-size: 20px;
+}
+
+fieldset {
+    border: #d6f1f3 1px solid;
+}
+legend {
+    border: #0d093c 3px solid;
+}
+#loading{
+    text-align: center;
+    vertical-align: middle;
+    line-height: 90px;
+}
+/*#ansContainer{
+    height: 85px;
+    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden; 
+}*/

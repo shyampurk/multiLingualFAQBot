@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-6" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <title>Camera User Manual Query</title>
+        <script src="lib/jquery-3.1.1.min.js"></script>
+        <script src="lib/pubnub.4.8.0.min.js"></script>
+        <script src="lib/bootstrap.min.js"></script>
+        <script src="lib/mustache.min.js"></script>
+        <link rel="stylesheet" href="lib/bootstrap.min.css"/>
+        <link href="style/stylesheet.css" rel="stylesheet" />
+        <script src="js/cameraManual.js"></script>
+    </head>
+
+    <body style="font-family:Verdana">
+        <div class="container" >
+            <h1 style="text-align:center;">Camera Manual User Query</h1>
+            <div class="row " style="padding-top:40px;">
+                <div class="col-sm-8 col-md-4 col-md-offset-4 col-sm-offset-2" style="text-align:center;">
+                    <form >
+                        <div class="form-group">
+                            <select class="form-control" id="document-list" required>
+                                <option selected disabled hidden>Select Your Camera Model</option>
+                                <!-- <option>Cannon EOS 550D</option> -->
+                            </select>
+                            <br />
+                            <select class="form-control" id="faq-list" required>
+                                <option selected disabled hidden>Select Your Query</option>
+                                <!-- <option>Introduction to eos550d</option>
+                                <option>how to connect camera to a printer?</option>
+                                <option>how do i clean the sensor?</option>
+                                <option>how to prevent camera shake?</option>
+                                <option>how do i edit still images?</option> -->
+                            </select>
+                            <br />
+                            <select class="form-control" id="language-list" required>
+                                <option selected disabled hidden>Select Target Language</option>
+                                <option value="en">English</option>
+                                <option value="de">German</option>
+                                <option value="fr">French</option>
+                                <option value="ar">Arabic</option>
+                            </select>
+                            <br />
+                            <input type="button" id="inputQuestionSubmit"  class="btn btn-primary btn-block" value="SUBMIT QUERY"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div id="queryAsked" class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">Search Query : <strong></strong></div>
+                </br></br>
+                <div id="loading" class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1"><strong></strong></div>
+                </br></br>
+                <div id="queryResultList"></div>
+            </div>
+        </div>
+        
+    </body>
+</html>
