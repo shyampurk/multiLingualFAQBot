@@ -73,6 +73,31 @@ Once you create the service, it will redirect you to the homepage of the service
 
 ![alt-tag](https://github.com/shyampurk/rankAndRetreiveDemo/blob/master/screenshots/rank_retrieve/rr_cred.png)
 
+# Language Translator Service - Setting up
+
+## Step 1 :
+
+Login to the Bluemix account with the valid credentials, and goto Catalog.
+
+## Step 2 :
+
+Select the Language Translator Service under the Watson Services. 
+
+![alt-tag](https://github.com/shyampurk/rankAndRetreiveDemo/blob/master/screenshots/doc_conv/doc_conversion_select.png)
+
+## Step 3 :
+
+Give the service name and scroll down the page,select the Free plan (you can see more about pricing options in that page) and click on the "create" button.
+
+![alt-tag](https://github.com/shyampurk/rankAndRetreiveDemo/blob/master/screenshots/doc_conv/create_service.png)
+
+## Step 4 :
+
+Once you create the service, it will redirect you to the homepage of the service. There, click on the "Service Credentials" to get the apikey to access the Language Translator api. Make a note of this API key.
+
+![alt-tag](https://github.com/shyampurk/rankAndRetreiveDemo/blob/master/screenshots/doc_conv/get_cred.png)
+
+![alt-tag](https://github.com/shyampurk/rankAndRetreiveDemo/blob/master/screenshots/doc_conv/create_success.png)
 
 # Training the Retrieve and Rank API with Camera User Manual
 
