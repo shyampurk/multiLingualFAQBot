@@ -56,11 +56,12 @@ App to Block and vice-versa :
 						"collectionName": "EOS550D",
 						"model": "Cannon EOS 550D",
 						"defaultUserQuery":[
-                                "Introduction to eos550d",
-                                "how to connect camera to a printer?",
-                                "how do i clean the sensor?",
-                                "LCD monitor precautions?",
-                                "explain about automatic self-cleaning sensor"]
+                                			"Introduction to eos550d",
+                                			"how to connect camera to a printer?",
+                                			"how do i clean the sensor?",
+                                			"LCD monitor precautions?",
+                                			"explain about automatic self-cleaning sensor"
+						]
 					}
 				}
 
@@ -96,14 +97,14 @@ App to Block and vice-versa :
 			"userQuery": <user query>,
 			"targetLanguage": <select target language>, 
 			"ltApiResp":{
-							"translations": [
-											{"translation":<user query answer>},
-											{"translation":<user query answer>},
-											{"translation":<user query answer>}
-										], 
-							"word_count": <total word count>, 
-							"character_count": <total character count>
-						}
+					"translations": [
+							{"translation":<user query answer>},
+							{"translation":<user query answer>},
+							{"translation":<user query answer>}
+					], 
+					"word_count": <total word count>, 
+					"character_count": <total character count>
+			}
 		}
 
 
@@ -117,20 +118,20 @@ App to Block and vice-versa :
 			"userQuery": "aperture",
 			"targetLanguage": "fr", 
 			"ltApiResp":{
-							"translations": [
-												{
-													"translation":"ادخال"
-												},
-												{
-													"translation":"هذه الكاميرا متوافقة مع بطاقات الذاكرة SD وبطاقات SDHC الذاكرة و Sdxc بطاقة"
-												},
-												{
-													"translation":"إدخال بند فحص لا تزال قائمة- 3 اتفاقيات المستخدمة في هذا الدليل"
-												}
-										], 
-							"word_count": 1326, 
-							"character_count": 14752
-						}
+				"translations": [
+					{
+						"translation":"ادخال"
+					},
+					{
+						"translation":"هذه الكاميرا متوافقة مع بطاقات الذاكرة SD وبطاقات SDHC الذاكرة و Sdxc بطاقة"
+					},
+					{
+						"translation":"إدخال بند فحص لا تزال قائمة- 3 اتفاقيات المستخدمة في هذا الدليل"
+					}
+				], 
+				"word_count": 1326, 
+				"character_count": 14752
+			}
 		}
 
 3) Error handling :
@@ -165,8 +166,8 @@ App to Block and vice-versa :
 			"userQuery": <user query>,
 			"targetLanguage": <select target language>,
 			"errHandler":{
-							"errType":<error message>
-						}
+					"errType":<error message>
+				     }
 		}
 
 	example:
@@ -179,8 +180,8 @@ App to Block and vice-versa :
 			"userQuery": "aperture",
 			"targetLanguage": "fr",
 			"errHandler":{
-							"errType":"Exceeded 32K message size Limitation"
-						}
+					"errType":"Exceeded 32K message size Limitation"
+				     }
 		}
 
 
