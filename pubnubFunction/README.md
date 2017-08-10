@@ -60,12 +60,12 @@ Replace the username,password and id's in the following line in block code :
 
 ## Step 9 :
 
-Click on the Start module button(top right) to start the block.
+Click on the Save module button(top left) to save the copied function code.
 
-![alt-tag](https://github.com/shyampurk/multiLingualFAQBot/blob/master/screenshots/pubnub_function/pubnubOpenApp.png)
+![alt-tag](https://github.com/shyampurk/multiLingualFAQBot/blob/master/screenshots/pubnub_function/pubnubsave.png)
 
 ## Step 10 :
 
-Your block code is now running.
+Click on the Start module button(top right) to start the block. Your block code is now running.
 
-![alt-tag](https://github.com/shyampurk/multiLingualFAQBot/blob/master/screenshots/pubnub_function/pubnubOpenApp.png)
+![alt-tag](https://github.com/shyampurk/multiLingualFAQBot/blob/master/screenshots/pubnub_function/pubnubstart.png)
