@@ -83,7 +83,7 @@ Login to the Bluemix account with the valid credentials, and goto Catalog.
 
 Select the Language Translator Service under the Watson Services. 
 
-![alt-tag](https://github.com/shyampurk/multiLingualFAQBot/blob/master/screenshots/language_translator/ 	select_service.png)
+![alt-tag](https://github.com/shyampurk/multiLingualFAQBot/blob/master/screenshots/language_translator/select_service.png)
 
 ## Step 3 :
 
@@ -156,4 +156,4 @@ Upload this [camera manual](eosrt2i-eos550d-im-en.pdf) to the collection
 
 ## Step 10 : Upload Sample Query Question
 
-Upload this set of sample questions[set1](canonEOS-550-Questions.txt) and [set2](newQuestionSet.txt) to the Retrieve and Rank Service
+Upload this set of sample questions [set1](canonEOS-550-Questions.txt) or [set2](newQuestionSet.txt) to the Retrieve and Rank Service
