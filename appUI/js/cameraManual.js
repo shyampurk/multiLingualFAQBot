@@ -23,13 +23,6 @@ $(document).ready(function () {
 	    publishKey: pub_key,
 	    ssl: true
 	})
-	var queryManualList = {
-        					"messagecode":"0",
-        					"messagetype":"req",
-        					"command":"query-list"
-        				}
-    console.log(queryManualList)
-	pub_publish(queryManualList);
 
 // Subscribes and Listens to the retrieve and rank query messages
 
@@ -53,6 +46,15 @@ $(document).ready(function () {
 	    }
 	})
 
+	var queryManualList = {
+        					"messagecode":"0",
+        					"messagetype":"req",
+        					"command":"query-list"
+        				}
+    console.log(queryManualList)
+	pub_publish(queryManualList);
+
+
 // Trigger click event on Enter Keypress 
 	inputQuestionSubmit.keypress(function (e) {
 	 	var key = e.which;
@@ -61,7 +63,6 @@ $(document).ready(function () {
 	    	return false;  
 	  	}
 	});
-
 
 
 /******************************************************************
@@ -90,6 +91,25 @@ $(document).ready(function () {
         }
     });
 
+/******************************************************************
+    Function    : pub_publish()
+    Channel     : 'faqbot_req_resp'
+    Description : Publishes the user query to R&R Watson Service
+*******************************************************************/
+	function pub_publish(pub_msg){
+		pubnub.publish({
+		        message: pub_msg,
+		        channel: PublishChannel,
+		        sendByPost: false, // true to send via post
+		        storeInHistory: true, //override default storage options
+		    },
+		    function (status, response) {
+		    	// console.log(response)
+		        // handle status, response
+		    }
+		);
+	};
+
 /***************************************************************************
     Function    : updateManualList()
     Parameters  : 'userManual' - list from solr collection
@@ -115,59 +135,39 @@ $(document).ready(function () {
     Parameters  : 'ltApiResp' - QueryAnswer list from R&R service
     Description : Fetches the Query Answer list from R&R Service and displays in UI
 ************************************************************************************/
-function updateQueryAnswer(ltApiResp){
-	loading.empty();
-	console.log(ltApiResp)
-	if("error_code" in ltApiResp){
-		alert("Error : "+ltApiResp.error_message)
-	}else{
-		for (var i = 0; i < ltApiResp.translations.length; i+=2) {
-			console.log(ltApiResp.translations.length)
-			
-			var userData = {
-					QueryTitle : ltApiResp.translations[i].translation.replace(/["[\]]+/g,''),
-					QueryAnswer : ltApiResp.translations[i+1].translation.replace(/["[\]]+/g,'')
-			}	
-			var userTemplate = [   '<div id="mainContainer" class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">',
-		                                '<fieldset class="majorpoints">',
-		                                '<legend class="majorpointslegend">{{QueryTitle}}</legend>',
-		                                '<div id="ansContainer" class="hiders" style="display:none">',
-		                                    '<div class="media-body" >',
-		                                        '<small class="text-muted" >{{QueryAnswer}}</small>',
-		                                    '</div>',
-		                                '</div>',
-		                                '</br>',
-		                            '</div>',
-		                            '</br>'].join("\n");
-			
-				var userQueryResultList = Mustache.render(userTemplate, userData);
-			queryResultList.append(userQueryResultList);
-		};
-		// Expand and close the Query Answer Div 
-		$('.majorpoints').click(function(){
-		    $(this).find('.hiders').toggle();
-		});
-	}
-	
-};
-
-/******************************************************************
-    Function    : pub_publish()
-    Channel     : 'faqbot_req_resp'
-    Description : Publishes the user query to R&R Watson Service
-*******************************************************************/
-	function pub_publish(pub_msg){
-		pubnub.publish({
-		        message: pub_msg,
-		        channel: PublishChannel,
-		        sendByPost: false, // true to send via post
-		        storeInHistory: true, //override default storage options
-		    },
-		    function (status, response) {
-		    	// console.log(response)
-		        // handle status, response
-		    }
-		);
+	function updateQueryAnswer(ltApiResp){
+	    loading.empty();		
+		console.log(ltApiResp)
+		if("error_code" in ltApiResp){
+			alert("Error : "+ltApiResp.error_message)
+		}else{
+			for (var i = 0; i < ltApiResp.translations.length; i+=2) {
+				console.log(ltApiResp.translations.length)
+				
+				var userData = {
+						QueryTitle : ltApiResp.translations[i].translation.replace(/["[\]]+/g,''),
+						QueryAnswer : ltApiResp.translations[i+1].translation.replace(/["[\]]+/g,'')
+				}	
+				var userTemplate = [   '<div id="mainContainer" class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">',
+			                                '<fieldset class="majorpoints">',
+			                                '<legend class="majorpointslegend">{{QueryTitle}}</legend>',
+			                                '<div id="ansContainer" class="hiders" style="display:none">',
+			                                    '<div class="media-body" >',
+			                                        '<small class="text-muted" >{{QueryAnswer}}</small>',
+			                                    '</div>',
+			                                '</div>',
+			                                '</br>',
+			                            '</div>',
+			                            '</br>'].join("\n");
+				
+					var userQueryResultList = Mustache.render(userTemplate, userData);
+				queryResultList.append(userQueryResultList);
+			};
+			// Expand and close the Query Answer Div 
+			$('.majorpoints').click(function(){
+			    $(this).find('.hiders').toggle();
+			});
+		}
 	};
-});
 
+});
