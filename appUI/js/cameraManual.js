@@ -66,7 +66,7 @@ $(document).ready(function () {
 
 /******************************************************************
     Function    : Input Query message
-    Channel     : 'rank-retrieve-user-query'
+    Channel     : 'faqbot_req_resp'
     Description : Publishes the user query data to pubnub block
 *******************************************************************/
 	inputQuestionSubmit.click(function (event) {
@@ -112,7 +112,7 @@ $(document).ready(function () {
 
 /***********************************************************************************
     Function    : updateQueryAnswer()
-    Parameters  : 'apidata' - QueryAnswer list from R&R service
+    Parameters  : 'ltApiResp' - QueryAnswer list from R&R service
     Description : Fetches the Query Answer list from R&R Service and displays in UI
 ************************************************************************************/
 function updateQueryAnswer(ltApiResp){
@@ -123,10 +123,11 @@ function updateQueryAnswer(ltApiResp){
 	}else{
 		for (var i = 0; i < ltApiResp.translations.length; i+=2) {
 			console.log(ltApiResp.translations.length)
+			
 			var userData = {
-					QueryTitle : ltApiResp.translations[i].translation,
-					QueryAnswer : ltApiResp.translations[i+1].translation,
-				}
+					QueryTitle : ltApiResp.translations[i].translation.replace(/["[\]]+/g,''),
+					QueryAnswer : ltApiResp.translations[i+1].translation.replace(/["[\]]+/g,'')
+			}	
 			var userTemplate = [   '<div id="mainContainer" class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">',
 		                                '<fieldset class="majorpoints">',
 		                                '<legend class="majorpointslegend">{{QueryTitle}}</legend>',
@@ -152,7 +153,7 @@ function updateQueryAnswer(ltApiResp){
 
 /******************************************************************
     Function    : pub_publish()
-    Channel     : 'rank-retrieve-user-query'
+    Channel     : 'faqbot_req_resp'
     Description : Publishes the user query to R&R Watson Service
 *******************************************************************/
 	function pub_publish(pub_msg){
