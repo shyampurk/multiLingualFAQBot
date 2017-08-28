@@ -39,7 +39,7 @@ $(document).ready(function () {
 	        }else if(msg.messagecode == '1' && msg.messagetype == "resp") {
 	        	console.log(msg.ltApiResp)
 	        	queryAsked.text("Search Query : "+msg.userQuery);
-				updateQueryAnswer(msg.ltApiResp)
+				updateQueryAnswer(msg.targetLanguage,msg.ltApiResp)
 	        }else if(msg.messagecode == '1' && msg.messagetype == "err"){
 	        	alert("Error : "+msg.errHandler.errType)
 	        }
@@ -132,21 +132,28 @@ $(document).ready(function () {
 
 /***********************************************************************************
     Function    : updateQueryAnswer()
-    Parameters  : 'ltApiResp' - QueryAnswer list from R&R service
+    Parameters  : 'ltApiResp' ,'targetLanguage'- QueryAnswer list from R&R service
     Description : Fetches the Query Answer list from R&R Service and displays in UI
 ************************************************************************************/
-	function updateQueryAnswer(ltApiResp){
+	function updateQueryAnswer(targetLanguage,ltApiResp){
 	    loading.empty();		
-		console.log(ltApiResp)
+		// console.log(ltApiResp,targetLanguage)
 		if("error_code" in ltApiResp){
 			alert("Error : "+ltApiResp.error_message)
 		}else{
 			for (var i = 0; i < ltApiResp.translations.length; i+=2) {
 				console.log(ltApiResp.translations.length)
 				
-				var userData = {
-						QueryTitle : ltApiResp.translations[i].translation.replace(/["[\]]+/g,''),
-						QueryAnswer : ltApiResp.translations[i+1].translation.replace(/["[\]]+/g,'')
+				if(targetLanguage == "en"){
+					var userData = {
+						QueryTitle : ltApiResp.translations[i].translation,
+						QueryAnswer : ltApiResp.translations[i+1].translation
+					}
+				}else{
+					var userData = {
+							QueryTitle : ltApiResp.translations[i].translation.replace(/["[\]]+/g,''),
+							QueryAnswer : ltApiResp.translations[i+1].translation.replace(/["[\]]+/g,'')
+					}
 				}	
 				var userTemplate = [   '<div id="mainContainer" class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">',
 			                                '<fieldset class="majorpoints">',
