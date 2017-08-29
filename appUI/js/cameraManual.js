@@ -32,14 +32,16 @@ $(document).ready(function () {
 
 	pubnub.addListener({
 	    message: function(m) {
-	        console.log(m.message)
 	        var msg = m.message;
 	        if(msg.messagecode == '0' && msg.messagetype == "resp") {
 	        	updateManualList(msg.userManual)
 	        }else if(msg.messagecode == '1' && msg.messagetype == "resp") {
-	        	console.log(msg.ltApiResp)
-	        	queryAsked.text("Search Query : "+msg.userQuery);
-				updateQueryAnswer(msg.targetLanguage,msg.ltApiResp)
+	        	if(msg.ltApiResp.hasOwnProperty("error")){
+	        		alert("Error : "+msg.ltApiResp.error)
+	        	}else{
+		        	queryAsked.text("Search Query : "+msg.userQuery);
+					updateQueryAnswer(msg.targetLanguage,msg.ltApiResp)
+	        	}
 	        }else if(msg.messagecode == '1' && msg.messagetype == "err"){
 	        	alert("Error : "+msg.errHandler.errType)
 	        }
@@ -51,7 +53,7 @@ $(document).ready(function () {
         					"messagetype":"req",
         					"command":"query-list"
         				}
-    console.log(queryManualList)
+
 	pub_publish(queryManualList);
 
 
@@ -82,8 +84,7 @@ $(document).ready(function () {
         					"userQuery":faqList.val(),
         					"targetLanguage":languageList.val()
         				}
-        console.log(queryMessage)
-        console.log(faqList.val(),documentList.val(),languageList.val())
+
         if(faqList.val() == "" && documentList.val() == "" && languageList.val() == ""){
         	alert("Invalid Input Value or Empty ")
         }else{
@@ -116,17 +117,16 @@ $(document).ready(function () {
     Description : Fetches the usermanual list from block and displays in UI
 ****************************************************************************/
 	function updateManualList(userManual){
-	   	console.log(userManual)
 
 	   	if (userManual.model.length != 0) {
 			document.getElementById("document-list").innerHTML = "<option>"+userManual.model+"</option>";
 		}
 		if (userManual.defaultUserQuery.length != 0) {
-			var catOptions = "";
+			var categoryOptions = "";
 			for (var i = 0; i < userManual.defaultUserQuery.length; i++) {
-				catOptions += "<option>" + userManual.defaultUserQuery[i] + "</option>";
+				categoryOptions += "<option>" + userManual.defaultUserQuery[i] + "</option>";
 			};
-			document.getElementById("faq-list").innerHTML = catOptions;
+			document.getElementById("faq-list").innerHTML = categoryOptions;
 		}
 	};
 
@@ -137,12 +137,10 @@ $(document).ready(function () {
 ************************************************************************************/
 	function updateQueryAnswer(targetLanguage,ltApiResp){
 	    loading.empty();		
-		// console.log(ltApiResp,targetLanguage)
 		if("error_code" in ltApiResp){
 			alert("Error : "+ltApiResp.error_message)
 		}else{
 			for (var i = 0; i < ltApiResp.translations.length; i+=2) {
-				console.log(ltApiResp.translations.length)
 				
 				if(targetLanguage == "en"){
 					var userData = {

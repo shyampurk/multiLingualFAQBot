@@ -23,13 +23,11 @@ export default (request) => {
                             "model":"Cannon EOS 550D",
                             "defaultUserQuery":[
                                 "Introduction to eos550d",
-                                "how to connect camera to a printer?",
                                 "how do i clean the sensor?",
-                                "LCD monitor precautions?",
                                 "explain about automatic self-cleaning sensor"]
                         };
 
-    var ltUrl = 'https://watson-api-explorer.mybluemix.net/language-translator/api/v2/translate'
+    var ltUrl = 'https://watson-api-explorer.mybluemix.net/language-translator/api/v2/translate';
     var rrUrl = 'https://watson-api-explorer.mybluemix.net/retrieve-and-rank/api/v1/solr_clusters/'+clusterID+'/solr/'+solrCollection+'/select';
      // http options for the rest call.
     const rr_http_options = {
@@ -44,7 +42,6 @@ export default (request) => {
     function dbget()
     {
           return db.get(kvstoreCameraList).then((database_value)=>{
-            console.log(database_value);
                 if(database_value){
                     request.userManual = database_value;     
                 }
@@ -64,7 +61,7 @@ export default (request) => {
     // Checking for operation selected in the UI
     // 0 - Query for camera manual list from kv store
     if(request.message.messagecode === "0"){
-        console.log("In message code 0 - fetch manual list");
+        //comment out the below mentioned line to set values in db for the first time of your execution
         // db.set(kvstoreCameraList,cameraListData,144000);
 
         return dbget().then((x)=>{
@@ -76,27 +73,26 @@ export default (request) => {
     // Checking for operation selected in the UI
     // 1 - Query for user questions from the camera manual 
     else if(request.message.messagecode === "1"){
-        console.log("In message code 1 - answer query");
 
         return xhr.fetch(rrUrl, rr_http_options).then((x) => {
             var rr_resp = JSON.parse(x.body);
+            return rr_resp
+        }).then((rr_resp) =>{
             var inputLanguageText = [];
             var inputEnglishLanguageText = [];
 
             if (request.message.targetLanguage == "en") {
                 for (var i = 0; i < rr_resp.response.docs.length; i++) {
-                    inputEnglishLanguageText.push({"translation":rr_resp.response.docs[i].title})
-                    inputEnglishLanguageText.push({"translation":rr_resp.response.docs[i].body})
-                    if(i > 2){
+                    inputEnglishLanguageText.push({"translation":rr_resp.response.docs[i].title});
+                    inputEnglishLanguageText.push({"translation":rr_resp.response.docs[i].body});
+                    if(i >= 2){
                         break;
                     }
                 }
                 var en_resp = {"translations":inputEnglishLanguageText};
-                console.log(en_resp)
-                var respSize = lengthInUtf8Bytes(JSON.stringify(en_resp))
+                var respSize = lengthInUtf8Bytes(JSON.stringify(en_resp));
                 if(respSize >= 31000){
-                    console.log("resp size :",respSize)
-                    var errResp = {"errType":"Exceeded 32K message size Limitation"}
+                    var errResp = {"errType":"Exceeded 32K message size Limitation"};
                     request.message.messagetype = "err";
                     request.message.errHandler = errResp;
                     inputEnglishLanguageText = [];
@@ -109,9 +105,9 @@ export default (request) => {
                 }
             }else{
                 for (var j = 0; j < rr_resp.response.docs.length; j++) {
-                    inputLanguageText.push(JSON.stringify(rr_resp.response.docs[j].title))
-                    inputLanguageText.push(JSON.stringify(rr_resp.response.docs[j].body))
-                    if(j > 2){
+                    inputLanguageText.push(JSON.stringify(rr_resp.response.docs[j].title));
+                    inputLanguageText.push(JSON.stringify(rr_resp.response.docs[j].body));
+                    if(j >= 2){
                         break;
                     }
                 }
@@ -129,13 +125,12 @@ export default (request) => {
                             "text":inputLanguageText
                         }
                     };
+
                 return xhr.fetch(ltUrl, lt_http_options).then((y) => {
-                    var ltResp = JSON.parse(y.body)
-                    console.log(ltResp)
-                    var respSize = lengthInUtf8Bytes(JSON.stringify(ltResp))
+                    var ltResp = JSON.parse(y.body);
+                    var respSize = lengthInUtf8Bytes(JSON.stringify(ltResp));
                     if(respSize >= 31000){
-                        console.log("resp size :",respSize)
-                        var errResp = {"errType":"Exceeded 32K message size Limitation"}
+                        var errResp = {"errType":"Exceeded 32K message size Limitation"};
                         request.message.messagetype = "err";
                         request.message.errHandler = errResp;
                         inputLanguageText = [];
@@ -147,9 +142,13 @@ export default (request) => {
                         return request;
                     }
                     
-                });
+                })
             }
+        }).catch(function(error) {
+            var errResp = {"errType":"URL call failed ,Try again"};
+            request.message.messagetype = "err";
+            request.message.errHandler = errResp;
+            return request.ok();
         });
     }
-    return request.ok();
 };
